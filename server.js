@@ -57,7 +57,24 @@ app.post('/api/v1/stuff', (request, response) => {
         error
       })
     })
+})
 
+app.patch('/api/v1/stuff/:id', (request, response) => {
+  database('stuff')
+    .where('id', request.params.id)
+    .update(request.body, '')
+    .then(update => {
+      if (!update){
+        return response.sendStatus(404).json({
+          error: 'Could not update'
+        })
+      } else {
+        response.sendStatus(202)
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
 })
 
 module.exports = app;
