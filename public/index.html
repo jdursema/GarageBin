@@ -3,11 +3,16 @@
     <title>
       Garage Bin
     </title>
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
   </head>
   <body>
     <header>
       <h1>Garage <span>Bin</span></h1>
     </header>
+    <div class='sort-btns'>
+      <button class='sort-alph'>Sort Items A-Z</button>
+      <button class='sort-back'>Sort Items Z-A</button>
+    </div>
     <body>
       <div class="list-of-stuff">
 
@@ -21,13 +26,15 @@
           <lable for='reason-input'>Reasoning:</lable>
           <input class='reason-input' type='text'/>
         </div>
-        <select name="text">
+        <select name="text" class='cleanliness-selector'>
           <option value="Sparkling">Sparkling</option>
           <option value="Dusty" selected>Dusty</option>
           <option value="Rancid">Rancid</option>
         </select>
-        <button>Add to Garage</button>
+        <button class='post-btn'>Add to Garage</button>
       </form>
+      <script src='./js/jquery.min.js'> </script>
+    <script type="text/javascript" src= "./js/script.js"> </script>
     </body>
-  </body>
+
 </html>

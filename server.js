@@ -13,10 +13,6 @@ app.use(express.static(path.join(__dirname, '/public')))
 
 app.set('port', process.env.PORT || 3000)
 
-app.listen(app.get('port'), () => {
-  console.log('listening');
-});
-
 app.get('/api/v1/stuff', (request, response) => {
   database('stuff').select()
 
@@ -76,5 +72,9 @@ app.patch('/api/v1/stuff/:id', (request, response) => {
       response.status(500).json({ error })
     })
 })
+
+app.listen(app.get('port'), () => {
+  console.log('listening');
+});
 
 module.exports = app;
