@@ -8,3 +8,25 @@ body{
 .hidden{
   display: none;
 }
+
+.garage-door{
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  left:0;
+  width: 100vw;
+  height: 100vh;
+  background-color:gray;
+  transition-property: all;
+	transition-duration: 5s;
+}
+
+.open{
+  height: 5vh;
+  transition-property: all;
+	transition-duration: 5s;
+}
