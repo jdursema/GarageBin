@@ -10,7 +10,7 @@ const fetchItems = async(event) => {
       <h2 class='name'>${item.name}</h2>
       <div class='item-info hidden'>
         <h3>${item.reason_for_linger}</h3>
-        <h3>${item.cleanliness}</h3>
+        <h3 class='itemCleanliness'>${item.cleanliness}</h3>
       </div>
     </div>`)
   })
@@ -18,7 +18,20 @@ const fetchItems = async(event) => {
 }
 
 const countItems = (itemsArray) => {
-  
+  $('.item-count').children().remove()
+  $('.item-count').append(`<h4>${itemsArray.length}</h4>`)
+
+  const rancidFilter= itemsArray.filter(item => item.cleanliness ==='Rancid')
+  $('.rancid-count').children().remove()
+  $('.rancid-count').append(`<h4>${rancidFilter.length}</h4>`)
+
+  const dustyFilter= itemsArray.filter(item => item.cleanliness ==='Dusty')
+  $('.dusty-count').children().remove()
+  $('.dusty-count').append(`<h4>${dustyFilter.length}</h4>`)
+
+  const sparklingFilter= itemsArray.filter(item => item.cleanliness ==='Sparkling')
+  $('.sparkling-count').children().remove()
+  $('.sparkling-count').append(`<h4>${sparklingFilter.length}</h4>`)
 }
 
 const toggelItemInfo = () => {
@@ -49,9 +62,20 @@ const postNewItem = async() => {
       <h2 class='name'>${itemName}</h2>
       <div class='item-info hidden'>
         <h3>${itemReason}</h3>
-        <h3>${itemCleanliness}</h3>
+        <h3 class='itemCleanliness'>${itemCleanliness}</h3>
       </div>
     </div>`)
+    const itemsArray = []
+    $('.name').each((index, item) => {
+      $($(item).next().children()[1]).text()
+      const itemObject = 
+      {name: $(item).text(),
+      cleanliness: $($(item).next().children()[1]).text()}
+      itemsArray.push(itemObject)
+    })
+    $('.reason-input').val('')
+    $('.name-input').val('')
+    countItems(itemsArray)
 }
 
 const sortItemsAlphabetically = async() => {
@@ -98,6 +122,10 @@ const sortItemsBackwards = async() => {
   })
 }
 
+const openGarage = () => {
+  $('.garage-door').toggleClass('open')
+}
+
 
 
 
@@ -107,5 +135,6 @@ $(window).on('load', fetchItems)
 $('.post-btn').on('click', postNewItem)
 $('.sort-alph').on('click', sortItemsAlphabetically)
 $('.sort-back').on('click', sortItemsBackwards)
+$('.open-btn').on('click', openGarage)
 
 
