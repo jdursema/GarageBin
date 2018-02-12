@@ -14,6 +14,11 @@ const fetchItems = async(event) => {
       </div>
     </div>`)
   })
+  countItems(fetchResponse.stuff)
+}
+
+const countItems = (itemsArray) => {
+  
 }
 
 const toggelItemInfo = () => {
@@ -49,8 +54,48 @@ const postNewItem = async() => {
     </div>`)
 }
 
-const sortItemsAlphabetically = () => {
-  
+const sortItemsAlphabetically = async() => {
+  const initialFetch = await fetch('/api/v1/stuff')
+  const stuffResponse = await initialFetch.json()
+  const sortedItems= await stuffResponse.stuff.sort((a, b) => {
+    if(a.name < b.name) return -1;
+    if(a.name> b.name) return 1;
+    return 0;
+  })
+  $('.list-of-stuff').children().remove()
+
+  sortedItems.forEach(item => {
+    $('.list-of-stuff').append(`
+    <div id=${item.id}>
+      <h2 class='name'>${item.name}</h2>
+      <div class='item-info hidden'>
+        <h3>${item.reason_for_linger}</h3>
+        <h3>${item.cleanliness}</h3>
+      </div>
+    </div>`)
+  })
+}
+
+const sortItemsBackwards = async() => {
+  const initialFetch = await fetch('/api/v1/stuff')
+  const stuffResponse = await initialFetch.json()
+  const sortedItems= await stuffResponse.stuff.sort((a, b) => {
+    if(a.name < b.name) return -1;
+    if(a.name> b.name) return 1;
+    return 0;
+  })
+  $('.list-of-stuff').children().remove()
+
+  sortedItems.forEach(item => {
+    $('.list-of-stuff').prepend(`
+    <div id=${item.id}>
+      <h2 class='name'>${item.name}</h2>
+      <div class='item-info hidden'>
+        <h3>${item.reason_for_linger}</h3>
+        <h3>${item.cleanliness}</h3>
+      </div>
+    </div>`)
+  })
 }
 
 
@@ -61,5 +106,6 @@ $('.list-of-stuff').on('click', toggelItemInfo)
 $(window).on('load', fetchItems)
 $('.post-btn').on('click', postNewItem)
 $('.sort-alph').on('click', sortItemsAlphabetically)
+$('.sort-back').on('click', sortItemsBackwards)
 
 
