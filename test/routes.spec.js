@@ -32,6 +32,7 @@ describe('Client routes', function() {
 })
 
 describe('API Routes', () => {
+  let randomId;
   before((done) => {
   knex.seed.run()
     .then(() => {
@@ -63,5 +64,65 @@ describe('API Routes', () => {
       })
     })
   })
+  describe('POST /api/v1/stuff', () => {
+    it('should add a new thing to the garage', () => {
+      return chai.request(server)
+      .post ('/api/v1/stuff')
+      .send({
+        name: 'Cheddar Rockets',
+        reason_for_linger: 'noms',
+        cleanliness: 'Dusty'
+      })
+      .then(response => {
 
+        response.should.have.status(201)
+        response.body.should.be.a('object');
+        response.body.should.have.property('id');
+        randomId = response.body.id
+      })
+      .catch(error => {
+        throw error;
+      })
+    })
+    it('should not create a new candidate if the user forgot to include a parameter', () => {
+      return chai.request(server)
+      .post('/api/v1/stuff')
+      .send({
+        name: 'Cheddar Rockets',
+        cleanliness: 'Dusty'
+      })
+      .then(response => {
+      })
+      .catch(error => {
+        error.should.have.status(422)
+        error.response.body.error.should.equal(
+          'You are missing the required parameter reason_for_linger');
+      })
+    })
+  })
+  describe('PATCH /api/v1/stuff/:id', () => {
+    it('should be able to patch a specific candidate', () => {
+
+      return chai.request(server)
+
+      .patch(`/api/v1/stuff/${randomId}`)
+      .send({cleanliness: 'Sparkling'})
+      .then(response => {
+        response.should.have.status(202)
+      })
+      .catch(error => {
+        throw error
+      })
+    })
+    it('should return an error if the contribution does not exist', () => {
+      return chai.request(server)
+      .patch('/api/v1/stuff/99999999')
+      .send({ cleanliness: 'Rancid'})
+      .then(response => {
+      })
+      .catch(error => {
+        error.should.have.status(404)
+      })
+    })
+  })
 })
